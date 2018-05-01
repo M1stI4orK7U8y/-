@@ -147,10 +147,8 @@ func NewBlockchain() *Blockchain {
 		b := tx.Bucket([]byte(blocksBucket))
 
 		if b == nil {
-			fmt.Println("No existing blockchain found. Creating a new one")
-			genesis := NewGenesisBlock()
-
-			_, hash := getNonceAndRetHash(genesis)
+			fmt.Println("區塊鏈不存在, 自動產生區塊鏈(genesis block)")
+			genesis, hash := NewGenesisBlock()
 
 			b, err := tx.CreateBucket([]byte(blocksBucket))
 			if err != nil {

@@ -25,9 +25,24 @@ func (cmd *CMD) printUsage() {
 	fmt.Println("  getbestheight - 顯示目前高度")
 }
 
-func (cmd *CMD) addBlock(data string) {
-	cmd.bc.AddBlock(data)
-	fmt.Println("成功!")
+func (cmd *CMD) addBlock() {
+
+	s1 := rand.NewSource(time.Now().UnixNano())
+	r1 := rand.New(s1)
+
+	var blocks int
+	fmt.Print("Blocks: ")
+	_, err := fmt.Scan(&blocks)
+
+	if err != nil {
+		blocks = 1
+	}
+
+	for i := 0; i < blocks; i++ {
+		data := "Random: " + strconv.Itoa(r1.Intn(MaxInt))
+		cmd.bc.AddBlock(data)
+	}
+
 }
 
 func (cmd *CMD) printChain() {
@@ -111,8 +126,6 @@ func (cmd *CMD) printBlockByHash() {
 // Run processes commands
 func (cmd *CMD) Run() {
 
-	s1 := rand.NewSource(time.Now().UnixNano())
-	r1 := rand.New(s1)
 	for {
 		var inputCmd string
 		fmt.Print("Enter command: ")
@@ -127,8 +140,7 @@ func (cmd *CMD) Run() {
 		} else {
 			switch inputCmd {
 			case "addblock":
-				data := "Random: " + strconv.Itoa(r1.Intn(MaxInt))
-				cmd.addBlock(data)
+				cmd.addBlock()
 			case "printchain":
 				cmd.printChain()
 			case "getblockbyheight":

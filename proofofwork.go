@@ -12,7 +12,7 @@ var (
 	maxNonce = math.MaxInt64
 )
 
-// 24 -> 12, make it easy
+// 24 -> 12, make it easy 000...
 const targetBits = 12
 
 // NewProofOfWork builds and returns a ProofOfWork
@@ -52,9 +52,12 @@ func getNonceAndRetHash(block *Block) (int, []byte) {
 
 	target := getTarget(block.Bits)
 
-	fmt.Printf("Mining the block containing \"%s\"\n", block.Data)
+	fmt.Printf("計算區塊hash, 區塊內容: \"%s\"\n", block.Data)
 	for block.Nonce < maxNonce {
 		hash = calculateHash(block)
+
+		fmt.Printf("HASH: \r%x", hash)
+
 		hashInt.SetBytes(hash[:])
 
 		if hashInt.Cmp(target) == -1 {
@@ -63,6 +66,8 @@ func getNonceAndRetHash(block *Block) (int, []byte) {
 			block.Nonce++
 		}
 	}
+
+	fmt.Println("成功!")
 	fmt.Print("\n\n")
 
 	return block.Nonce, hash[:]

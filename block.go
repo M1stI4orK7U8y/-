@@ -30,7 +30,7 @@ func (b *Block) Serialize() []byte {
 	return result.Bytes()
 }
 
-// NewBlock : creates and returns a new Block
+// NewBlock : creates and returns a new Block anh hash
 func NewBlock(data string, prevBlockHash []byte, height int) (*Block, []byte) {
 	block := &Block{time.Now().Unix(), height, []byte(data), prevBlockHash, 0, targetBits}
 	nonce, hash := getNonceAndRetHash(block)
@@ -40,10 +40,10 @@ func NewBlock(data string, prevBlockHash []byte, height int) (*Block, []byte) {
 	return block, hash
 }
 
-// NewGenesisBlock : creates and returns genesis Block
-func NewGenesisBlock() *Block {
-	retval, _ := NewBlock("Genesis Block", []byte{}, 0)
-	return retval
+// NewGenesisBlock : creates and returns genesis Block and hash
+func NewGenesisBlock() (*Block, []byte) {
+	retval, hash := NewBlock("Genesis Block", []byte{}, 0)
+	return retval, hash
 }
 
 // Deserialize a block
